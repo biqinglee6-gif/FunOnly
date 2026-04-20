@@ -1,0 +1,48 @@
+:root {
+  --x-bg: #ffffff;
+  --x-text: #0f1419;
+  --x-muted: #5b7083;
+  --x-blue: #1d9bf0;
+  --x-border: #eff3f4;
+  --x-max-width: 430px;
+
+  --x-fs-xs: clamp(12px, 2.8vw, 13px);
+  --x-fs-sm: clamp(13px, 3.1vw, 15px);
+  --x-fs-md: clamp(14px, 3.5vw, 16px);
+  --x-fs-lg: clamp(16px, 4.1vw, 18px);
+  --x-fs-xl: clamp(18px, 4.6vw, 22px);
+
+  --x-safe-top: env(safe-area-inset-top, 0px);
+  --x-safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background: #f5f8fa;
+  color: var(--x-text);
+  overflow: hidden;
+}
+
+button {
+  font: inherit;
+}
+
+input,
+textarea {
+  font: inherit;
+}
