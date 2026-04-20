@@ -14,7 +14,7 @@ export const USER_PROFILE_STORE = {
     avatar: '../../photo/EB4CC4CD4A39F547CBB1826A15425026.jpg',
     cover: '../../photo/007ZgaBFly1i63xqv74joj32bc38oe83.jpg',
     verified: false,
-    bio: '个人主页内容占位，后续可由开发者自行补充。',
+    bio: '爱狗人士',
     category: '创作者',
     joinedAt: '2024年6月 加入',
     following: 2,
@@ -23,21 +23,7 @@ export const USER_PROFILE_STORE = {
       {
         id: 9001,
         pinned: true,
-        text: '这是我的主页帖子占位。\n开发者可以在这个对象中继续补充媒体、链接和互动数。',
-        time: '1小时',
-        links: ['https://example.com/demo-post'],
-        stats: { replies: 2, reposts: 1, likes: 4, views: '138' },
-      },
-      {
-        id: 9002,
-        text: '这是我的主页帖子占位。\n开发者可以在这个对象中继续补充媒体、链接和互动数。',
-        time: '1小时',
-        links: ['https://example.com/demo-post'],
-        stats: { replies: 2, reposts: 1, likes: 4, views: '138' },
-      },
-      {
-        id: 9003,
-        text: '这是我的主页帖子占位。\n开发者可以在这个对象中继续补充媒体、链接和互动数。',
+        text: '这是我的主页帖子占位。',
         time: '1小时',
         links: ['https://example.com/demo-post'],
         stats: { replies: 2, reposts: 1, likes: 4, views: '138' },
@@ -66,7 +52,7 @@ export const USER_PROFILE_STORE = {
     {
         id: 9003,
         pinned: true,
-        text: '这是我的主页帖子占位。\n开发者可以在这个对象中继续补充媒体、链接和互动数。',
+        text: 'HelloTtttttest！',
         time: '1小时',
         links: ['https://example.com/demo-post'],
         stats: { replies: 2, reposts: 1, likes: 4, views: '138' },
@@ -81,8 +67,8 @@ export const USER_PROFILE_STORE = {
     avatar: 'https://images.unsplash.com/photo-1642761704729-b5b7cbf0a4df?auto=format&fit=crop&w=120&q=80',
     cover: 'https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1400&q=80',
     verified: false,
-    bio: '账号主页占位，后续由开发者自行填充。',
-    category: '娱乐和休闲',
+    bio: '账号主页占位',
+    category: '娱乐',
     joinedAt: '2010年3月 加入',
     following: 649,
     followers: 50332,
@@ -105,7 +91,7 @@ export const USER_PROFILE_STORE = {
       {
         id: 9901,
         pinned: true,
-        text: '【「BABY」MV公开】\nTVアニメ「花ざかりの君たちへ」エンディングテーマ\n\n开发者可编辑：帖子正文占位。',
+        text: '【「BABY」MV公开】\nTVアニメ「花ざかりの君たちへ」エンディングテーマ',
         time: '1月11日',
         links: ['youtu.be/tWqZxTAy7rU', 'link.to/yoasobi-baby', 'hanakimi-anime.com/special/novel/...'],
         mediaList: [
@@ -170,6 +156,8 @@ export const FOLLOWING_TWEETS = [
   },
 ];
 
+//推荐栏的内容：
+
 export const FOR_YOU_TWEETS = [
   {
     id: 11,
@@ -182,7 +170,7 @@ export const FOR_YOU_TWEETS = [
     time: '2月',
     publishAt: '26年1月5日, 13:38',
     source: 'bomtoon.tw',
-    content: "《Mr. A's Farm》\n\n来自 bomtoon.tw\n\n这是为你推荐里的示例推文，后续你可替换成自己的数据。",
+    content: "《Mr. A's Farm》\n\n来自 bomtoon.tw\n\n这是为你推荐里的示例推文",
     stats: { replies: 74, reposts: 12, likes: 4839, views: '410万' },
     isLikedByMe: false,
     media: {
@@ -297,7 +285,7 @@ export const INITIAL_NOTIFICATION_ITEMS = [
       handle: '@dogs_lab',
       avatar: 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=120&q=80',
     },
-    text: '李楷灿你知足吧 张峻豪上次走机场啥也没干裤子都被扒掉了 你被骂两句就忍着吧 没人动手还挺好的',
+    text: 'tttttttttttttestt',
     time: '2小时',
     tweetId: 2,
   },
