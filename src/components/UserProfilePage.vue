@@ -96,6 +96,10 @@ const props = defineProps({
     type: Object,
     default: null,
   },
+  tweetMap: {
+    type: Object,
+    default: () => ({}),
+  },
 });
 
 const emit = defineEmits(['back', 'open-tweet']);
@@ -111,9 +115,26 @@ watch(
   { immediate: true }
 );
 
+const toProfilePost = (item) => {
+  if (!item?.tweetId) return item;
+
+  const source = props.tweetMap[item.tweetId];
+  if (!source) return item;
+
+  return {
+    ...item,
+    text: source.content,
+    time: item.time || source.time,
+    stats: item.stats || source.stats,
+    media: item.media || source.media?.url || null,
+  };
+};
+
 const activeItems = computed(() => {
   if (!props.profileData) return [];
-  return activeTab.value === 'posts' ? props.profileData.posts || [] : props.profileData.replies || [];
+  const base = activeTab.value === 'posts' ? props.profileData.posts || [] : props.profileData.replies || [];
+  if (activeTab.value !== 'posts') return base;
+  return base.map(toProfilePost);
 });
 
 const coverStyle = computed(() => ({
@@ -126,8 +147,9 @@ const formatNumber = (value) => {
 };
 
 const handleOpenEntry = (item) => {
-  if (!item?.tweetId) return;
-  emit('open-tweet', item.tweetId);
+  const targetTweetId = item?.tweetId || null;
+  if (!targetTweetId) return;
+  emit('open-tweet', targetTweetId);
 };
 
 const toggleFollow = () => {

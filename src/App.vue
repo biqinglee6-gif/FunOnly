@@ -71,6 +71,7 @@
     <UserProfilePage
       v-else-if="activeOverlay === 'profile'"
       :profile-data="activeProfileData"
+      :tweet-map="tweetMap"
       @back="closeOverlay"
       @open-tweet="openTweetDetail"
     />
@@ -164,8 +165,88 @@ const notificationItems = reactive(cloneSeed(INITIAL_NOTIFICATION_ITEMS));
 const autoReplyRulesByTweet = reactive(cloneSeed(AUTO_REPLY_RULES_BY_TWEET));
 const repliesByTweet = reactive(cloneSeed(INITIAL_REPLIES_BY_TWEET));
 
-const allTweets = computed(() => [...followingTweets, ...forYouTweets]);
-const displayedTweets = computed(() => (activeFeedTab.value === 'forYou' ? forYouTweets : followingTweets));
+const findProfilePostById = (postId) => {
+  const targetId = Number(postId);
+  if (!targetId) return null;
+
+  for (const [profileKey, profileRecord] of Object.entries(userProfileStore)) {
+    const sourcePost = (profileRecord.posts || []).find((post) => Number(post.id) === targetId);
+    if (sourcePost) {
+      return {
+        profileKey,
+        profileRecord,
+        sourcePost,
+      };
+    }
+  }
+
+  return null;
+};
+
+const getReferencedProfilePost = (tweet) => {
+  const sourcePostId = tweet?.sourcePostId;
+  if (!sourcePostId) return null;
+  return findProfilePostById(sourcePostId);
+};
+
+const resolveFeedTweet = (tweet) => {
+  const referenced = getReferencedProfilePost(tweet);
+  if (!referenced) return tweet;
+
+  const { profileRecord, sourcePost } = referenced;
+  const sourceMedia = sourcePost.media
+    ? typeof sourcePost.media === 'string'
+      ? { type: 'image', url: sourcePost.media, alt: 'post media' }
+      : sourcePost.media
+    : sourcePost.mediaList?.[0]
+      ? { type: 'image', url: sourcePost.mediaList[0], alt: 'post media' }
+      : null;
+
+  return {
+    id: tweet.id,
+    user: {
+      name: profileRecord.name,
+      handle: profileRecord.handle,
+      avatar: profileRecord.avatar,
+      verified: profileRecord.verified,
+    },
+    time: tweet.time || sourcePost.time || '刚刚',
+    publishAt: tweet.publishAt || sourcePost.publishAt || '',
+    source: tweet.source || sourcePost.source || '',
+    replyTo: tweet.replyTo || sourcePost.replyTo,
+    content: tweet.content || sourcePost.content || sourcePost.text || '',
+    stats: tweet.stats || sourcePost.stats || { replies: 0, reposts: 0, likes: 0, views: '0' },
+    isLikedByMe: typeof tweet.isLikedByMe === 'boolean'
+      ? tweet.isLikedByMe
+      : Boolean(sourcePost.isLikedByMe),
+    media: tweet.media || sourceMedia,
+  };
+};
+
+const resolveFollowingTweet = (tweet) => {
+  const referenced = getReferencedProfilePost(tweet);
+  if (!referenced) return null;
+  return resolveFeedTweet(tweet);
+};
+
+const resolveForYouTweet = (tweet) => ({
+  ...tweet,
+  pinned: false,
+});
+
+const resolvedFollowingTweets = computed(() => followingTweets
+  .map((tweet) => resolveFollowingTweet(tweet))
+  .filter(Boolean));
+const resolvedForYouTweets = computed(() => forYouTweets.map((tweet) => resolveForYouTweet(tweet)));
+const allTweets = computed(() => [...resolvedFollowingTweets.value, ...resolvedForYouTweets.value]);
+const tweetMap = computed(() => {
+  const map = {};
+  allTweets.value.forEach((tweet) => {
+    map[tweet.id] = tweet;
+  });
+  return map;
+});
+const displayedTweets = computed(() => (activeFeedTab.value === 'forYou' ? resolvedForYouTweets.value : resolvedFollowingTweets.value));
 const activeTweet = computed(() => allTweets.value.find((item) => item.id === selectedTweetId.value) || null);
 const activeReplies = computed(() => repliesByTweet[selectedTweetId.value] || []);
 const activeThread = computed(() => messageThreads.find((item) => item.id === selectedThreadId.value) || null);
@@ -214,7 +295,24 @@ function ensureProfileRecord(handle) {
 }
 
 const handleLike = (tweetId) => {
-  const tweet = allTweets.value.find((item) => item.id === tweetId) ||
+  const rawFeedTweet = [...followingTweets, ...forYouTweets].find((item) => item.id === tweetId);
+  if (rawFeedTweet) {
+    const referenced = getReferencedProfilePost(rawFeedTweet);
+    const likeTarget = referenced?.sourcePost || rawFeedTweet;
+    const currentLiked = Boolean(rawFeedTweet.isLikedByMe);
+    const nextLiked = !currentLiked;
+
+    rawFeedTweet.isLikedByMe = nextLiked;
+    likeTarget.isLikedByMe = nextLiked;
+
+    if (!likeTarget.stats) {
+      likeTarget.stats = { replies: 0, reposts: 0, likes: 0, views: '0' };
+    }
+    likeTarget.stats.likes += nextLiked ? 1 : -1;
+    return;
+  }
+
+  const tweet =
     Object.values(repliesByTweet).flat().find((item) => item.id === tweetId);
 
   if (!tweet) return;

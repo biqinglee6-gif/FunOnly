@@ -21,12 +21,14 @@ export const USER_PROFILE_STORE = {
     followers: 0,
     posts: [
       {
-        id: 9001,
-        pinned: true,
-        text: '这是我的主页帖子占位。',
-        time: '1小时',
-        links: ['https://example.com/demo-post'],
-        stats: { replies: 2, reposts: 1, likes: 4, views: '138' },
+        id: 9003,
+        text: 'just一个占位',
+        time: '1天',
+        publishAt: '26年4月12日, 19:00',
+        source: 'x.com',
+        replyTo: '@Lars0421',
+        stats: { replies: 1, reposts: 3, likes: 10, views: '421' },
+        media: null,
       },
     ],
     replies: [
@@ -49,17 +51,47 @@ export const USER_PROFILE_STORE = {
     following: 8,
     followers: 42100,
     posts: [
-    {
-        id: 9003,
-        pinned: true,
-        text: 'HelloTtttttest！',
-        time: '1小时',
-        links: ['https://example.com/demo-post'],
-        stats: { replies: 2, reposts: 1, likes: 4, views: '138' },
+      {
+        id: 9001,
+        text: 'THE FIRST TAKE\nOUT\n\nAPR 15\n22:00\n\nTheFirstTake.lnk.to/YouTube\n\n@POP_YOURS\n@3pylanabby\n@ELLETERESA\n\n#THEFIRSTTAKE',
+        publishAt: '26年4月11日, 21:00',
+        source: 'youtube.com',
+        time: '1天',
+        media: {
+          type: 'image',
+          url: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1200&q=80',
+          alt: 'post media',
+        },
+        stats: { replies: 722, reposts: 247, likes: 5549, views: '21.7万' },
+        pinned: false,
       },
-    
     ],
     replies: [{ id: 9201, text: '感谢大家支持。', time: '2小时' }],
+  },
+  geography11: {
+    name: 'HIPHOP大好き少年',
+    handle: '@Geography11',
+    avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&w=120&q=80',
+    cover: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1400&q=80',
+    verified: false,
+    bio: '账号主页占位，后续可自行维护。',
+    category: '音乐',
+    joinedAt: '2023年2月 加入',
+    following: 120,
+    followers: 650,
+    posts: [
+      {
+        id: 2002,
+        text: '分かってたけどやっぱこっちだったか...\nSTARLIGHTがよかった',
+        time: '1天',
+        publishAt: '26年4月12日, 19:00',
+        source: 'x.com',
+        replyTo: '@The_FirstTake @POP_YOURS 及另外 2 人',
+        stats: { replies: 1, reposts: 3, likes: 10, views: '1,097' },
+        media: null,
+      },
+    ],
+    replies: [{ id: 9202, text: '主页回复占位。', time: '2小时' }],
   },
   tobori_tw: {
     name: 'tobori.tw',
@@ -72,7 +104,21 @@ export const USER_PROFILE_STORE = {
     joinedAt: '2010年3月 加入',
     following: 649,
     followers: 50332,
-    posts: [{ id: 11, tweetId: 11, text: "《Mr. A's Farm》", time: '2月' }],
+    posts: [
+      {
+        id: 11,
+        text: "《Mr. A's Farm》\n\n来自 bomtoon.tw\n\n这是为你推荐里的示例推文",
+        time: '2月',
+        publishAt: '26年1月5日, 13:38',
+        source: 'bomtoon.tw',
+        media: {
+          type: 'image',
+          url: 'https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1200&q=80',
+          alt: 'for you media',
+        },
+        stats: { replies: 74, reposts: 12, likes: 4839, views: '410万' },
+      },
+    ],
     replies: [{ id: 9301, text: '主页回复内容占位。', time: '3天' }],
   },
   yoasobi_staff: {
@@ -117,46 +163,20 @@ export const USER_PROFILE_STORE = {
 
 // 开发者维护入口 2：首页时间线帖子（按作者区分）
 export const FOLLOWING_TWEETS = [
+  // 正在关注流：仅引用 USER_PROFILE_STORE 中 posts 的 id，实现一处维护两处展示
   {
     id: 1,
-    user: {
-      name: 'Lars',
-      handle: '@lars0421',
-      avatar: 'https://images.unsplash.com/photo-1611162618071-b39a2ec055fb?auto=format&fit=crop&w=120&q=80',
-      verified: true,
-    },
-    time: '1天',
-    publishAt: '26年4月11日, 21:00',
-    source: 'youtube.com',
-    content: 'THE FIRST TAKE\nOUT\n\nAPR 15\n22:00\n\nTheFirstTake.lnk.to/YouTube\n\n@POP_YOURS\n@3pylanabby\n@ELLETERESA\n\n#THEFIRSTTAKE',
-    stats: { replies: 722, reposts: 247, likes: 5549, views: '21.7万' },
+    sourcePostId: 9001,
     isLikedByMe: false,
-    media: {
-      type: 'image',
-      url: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1200&q=80',
-      alt: 'post media',
-    },
   },
   {
     id: 2,
-    user: {
-      name: 'HIPHOP大好き少年',
-      handle: '@Geography11',
-      avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&w=120&q=80',
-      verified: false,
-    },
-    time: '1天',
-    publishAt: '26年4月12日, 19:00',
-    source: 'x.com',
-    replyTo: '@The_FirstTake @POP_YOURS 及另外 2 人',
-    content: '分かってたけどやっぱこっちだったか...\nSTARLIGHTがよかった',
-    stats: { replies: 1, reposts: 3, likes: 10, views: '1,097' },
+    sourcePostId: 2002,
     isLikedByMe: true,
-    media: null,
   },
 ];
 
-//推荐栏的内容：
+// 推荐流：独立维护，不与主页 posts 绑定
 
 export const FOR_YOU_TWEETS = [
   {
